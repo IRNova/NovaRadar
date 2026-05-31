@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="frontend/public/favicon.svg" alt="نوا رادار" width="80" />
+  <img src="logo.svg" alt="نوا رادار" width="80" />
   <h1>نوا رادار</h1>
   <p><strong>اسکنر IP کلودفلر — اپلیکیشن دسکتاپ</strong></p>
   <p>

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="frontend/public/favicon.svg" alt="Nova Radar" width="80" />
+  <img src="logo.svg" alt="Nova Radar" width="80" />
   <h1>Nova Radar</h1>
   <p><strong>Cloudflare IP Scanner — Desktop Application</strong></p>
   <p>
