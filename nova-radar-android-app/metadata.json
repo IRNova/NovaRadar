@@ -1,0 +1,6 @@
+{
+  "name": "Nova Radar",
+  "description": "Advanced network scanner and proxy diagnostic tool to find low-ping IPs and verify proxy servers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

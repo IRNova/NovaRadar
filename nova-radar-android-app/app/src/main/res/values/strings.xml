@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Nova Radar</string>
+    <string name="app_description">Advanced network scanner and proxy diagnostic tool</string>
+    <string name="app_category">Network Tools</string>
+</resources>
