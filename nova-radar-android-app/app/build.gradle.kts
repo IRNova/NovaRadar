@@ -1,7 +1,7 @@
 import java.net.URL
 import java.net.HttpURLConnection
 
-val appVersionName = "1.5.1"
+val appVersionName = "1.6.0"
 
 plugins {
   alias(libs.plugins.android.application)
@@ -19,7 +19,7 @@ android {
     applicationId = "com.novaradar.app"
     minSdk = 24
     targetSdk = 35
-    versionCode = 4
+    versionCode = 5
     versionName = appVersionName
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

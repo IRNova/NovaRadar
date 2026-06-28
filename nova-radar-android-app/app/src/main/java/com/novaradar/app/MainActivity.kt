@@ -16,12 +16,14 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Radar
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.List
@@ -124,7 +126,7 @@ fun MainAppLayout(viewModel: NovaRadarViewModel) {
                     0 -> EasyInstallerScreen(viewModel)
                     1 -> SettingsScreen(viewModel)
                     2 -> RadarScreen(viewModel)
-                    3 -> LogsScreen(viewModel)
+                    3 -> ImportScreen(viewModel)
                     4 -> AboutScreen(viewModel)
                 }
             }
@@ -243,7 +245,7 @@ fun MainAppLayout(viewModel: NovaRadarViewModel) {
                     NavigationItemData(key = "tab_installer", selectedIcon = Icons.Filled.Download, unselectedIcon = Icons.Outlined.Download),
                     NavigationItemData(key = "tab_settings", selectedIcon = Icons.Filled.Settings, unselectedIcon = Icons.Outlined.Settings),
                     NavigationItemData(key = "tab_radar", selectedIcon = Icons.Filled.Radar, unselectedIcon = Icons.Outlined.Radar),
-                    NavigationItemData(key = "tab_logs", selectedIcon = Icons.Filled.List, unselectedIcon = Icons.Outlined.List),
+                    NavigationItemData(key = "tab_import", selectedIcon = Icons.Filled.Add, unselectedIcon = Icons.Outlined.Add),
                     NavigationItemData(key = "tab_about", selectedIcon = Icons.Filled.Info, unselectedIcon = Icons.Outlined.Info)
                 )
 

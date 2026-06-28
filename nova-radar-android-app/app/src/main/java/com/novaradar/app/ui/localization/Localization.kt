@@ -65,7 +65,20 @@ object Localization {
         "grant_permissions" to "Grant Permissions",
         "select_all" to "Select All",
         "clear_all" to "Clear All",
-        "copy_all" to "Copy All Results"
+        "copy_all" to "Copy All Results",
+        "tab_import" to "Import IP",
+        "import_ip" to "IMPORT IP",
+        "import_paste_hint" to "Paste IP:port list here...",
+        "import_suffix_only" to "Suffix Only",
+        "import_scan" to "Scan",
+        "import_scan_suffix" to "Scan + Suffix",
+        "import_suffix_format" to "Apply Nova Proxy suffix (#Nova-id)",
+        "import_start" to "Process IPs",
+        "import_output" to "OUTPUT",
+        "import_copied" to "Copied!",
+        "import_save_file" to "Save to File",
+        "import_no_ips" to "No IPs imported yet",
+        "import_placeholder" to "e.g. 1.2.3.4:443\n5.6.7.8:8080\n192.168.1.1"
     )
 
     private val persianDict = mapOf(
@@ -123,6 +136,19 @@ object Localization {
         "grant_permissions" to "اعطای دسترسی‌های لازم",
         "select_all" to "انتخاب همه",
         "clear_all" to "پاکسازی همه",
-        "copy_all" to "کپی کردن تمامی نتایج"
+        "copy_all" to "کپی کردن تمامی نتایج",
+        "tab_import" to "ورود آی‌پی",
+        "import_ip" to "ورود آی‌پی",
+        "import_paste_hint" to "لیست IP:port را اینجا بچسبانید...",
+        "import_suffix_only" to "فقط سوفیکس",
+        "import_scan" to "اسکن",
+        "import_scan_suffix" to "اسکن + سوفیکس",
+        "import_suffix_format" to "اعمال سوفیکس نوا پروکسی (#Nova-id)",
+        "import_start" to "پردازش آی‌پی‌ها",
+        "import_output" to "خروجی",
+        "import_copied" to "کپی شد!",
+        "import_save_file" to "ذخیره در فایل",
+        "import_no_ips" to "هنوز آی‌پی‌ای وارد نشده",
+        "import_placeholder" to "مثال: 1.2.3.4:443\n5.6.7.8:8080\n192.168.1.1"
     )
 }

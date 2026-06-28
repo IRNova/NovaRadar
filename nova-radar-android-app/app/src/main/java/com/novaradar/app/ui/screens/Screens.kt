@@ -146,6 +146,12 @@ fun RadarScreen(viewModel: NovaRadarViewModel) {
 
     val subPagerState = androidx.compose.foundation.pager.rememberPagerState(pageCount = { 2 })
     val coroutineScope = rememberCoroutineScope()
+    var showConfigBuilder by remember { mutableStateOf(false) }
+    var cfgUuid by remember { mutableStateOf("") }
+    var cfgSni by remember { mutableStateOf("nova2.altramax083.workers.dev") }
+    var cfgNetwork by remember { mutableStateOf("ws") }
+    var cfgSecurity by remember { mutableStateOf("tls") }
+    var cfgPath by remember { mutableStateOf("/") }
 
     val infiniteTransition = rememberInfiniteTransition(label = "RadarSweep")
     val animatedAngle by infiniteTransition.animateFloat(
@@ -569,6 +575,23 @@ fun RadarScreen(viewModel: NovaRadarViewModel) {
                                     IconButton(onClick = { viewModel.exportResultsToTxtFile(context) }, modifier = Modifier.size(24.dp)) {
                                         Icon(Icons.Default.Save, "Save to TXT", tint = Color(0xFF22D3EE), modifier = Modifier.size(14.dp))
                                     }
+                                    IconButton(onClick = { showConfigBuilder = true }, modifier = Modifier.size(24.dp)) {
+                                        Icon(Icons.Default.Build, "Config Builder", tint = Color(0xFFFBBF24), modifier = Modifier.size(14.dp))
+                                    }
+                                }
+                            }
+
+                            // Export format buttons bar
+                            if (allIps.isNotEmpty()) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    val btnMod = Modifier.height(24.dp).clip(RoundedCornerShape(4.dp)).background(Color(0xFF064E3B).copy(alpha = 0.3f)).border(0.5.dp, Color(0xFF34D399).copy(alpha = 0.3f), RoundedCornerShape(4.dp)).padding(horizontal = 6.dp)
+                                    TextButton(onClick = { viewModel.exportClash(context) }, modifier = btnMod, contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)) { Text("Clash", fontSize = 8.sp, color = Color(0xFF34D399)) }
+                                    TextButton(onClick = { viewModel.exportV2Ray(context) }, modifier = btnMod, contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)) { Text("V2Ray", fontSize = 8.sp, color = Color(0xFF34D399)) }
+                                    TextButton(onClick = { viewModel.exportVLESS(context) }, modifier = btnMod, contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)) { Text("VLESS", fontSize = 8.sp, color = Color(0xFF34D399)) }
+                                    TextButton(onClick = { viewModel.exportSingBox(context) }, modifier = btnMod, contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)) { Text("Sing-Box", fontSize = 8.sp, color = Color(0xFF34D399)) }
                                 }
                             }
 
@@ -594,21 +617,35 @@ fun RadarScreen(viewModel: NovaRadarViewModel) {
                                         verticalArrangement = Arrangement.spacedBy(1.dp)
                                     ) {
                                         items(allIps, key = { it.hashCode() }) { alive ->
+                                            val speedKey = "${alive.ip}:${alive.port}"
+                                            val speedStr = viewModel.speedResults.value[speedKey] ?: "--"
                                             Row(
                                                 modifier = Modifier.fillMaxWidth()
                                                     .clip(RoundedCornerShape(3.dp))
                                                     .background(Color(0xFF00FF66).copy(alpha = 0.03f))
-                                                    .clickable { viewModel.copyIndividualToClipboard(context, alive) }
-                                                    .padding(horizontal = 6.dp, vertical = 3.dp),
+                                                    .padding(horizontal = 6.dp, vertical = 2.dp),
                                                 horizontalArrangement = Arrangement.SpaceBetween,
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
                                                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                                                     Box(Modifier.size(4.dp).clip(CircleShape).background(when { alive.ping < 200 -> Color(0xFF34D399); alive.ping < 500 -> Color(0xFFFBBF24); else -> Color(0xFFf87171) }))
-                                                    Spacer(Modifier.width(5.dp))
-                                                    Text("${alive.ip}:${alive.port}#Nova-${alive.novaId}", fontFamily = FontFamily.Monospace, fontSize = 8.sp, color = Color(0xFF00FF66).copy(alpha = 0.85f))
+                                                    Spacer(Modifier.width(4.dp))
+                                                    Text("${alive.ip}:${alive.port}#Nova-${alive.novaId}", fontFamily = FontFamily.Monospace, fontSize = 7.sp, color = Color(0xFF00FF66).copy(alpha = 0.85f), maxLines = 1)
                                                 }
-                                                Text("${alive.ping}ms", fontFamily = FontFamily.Monospace, fontSize = 8.sp, color = when { alive.ping < 200 -> Color(0xFF34D399); alive.ping < 500 -> Color(0xFFFBBF24); else -> Color(0xFFf87171) })
+                                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                                    Text("${alive.ping}ms", fontFamily = FontFamily.Monospace, fontSize = 7.sp, color = when { alive.ping < 200 -> Color(0xFF34D399); alive.ping < 500 -> Color(0xFFFBBF24); else -> Color(0xFFf87171) })
+                                                    Text(speedStr, fontFamily = FontFamily.Monospace, fontSize = 7.sp, color = Color(0xFFEAB308).copy(alpha = 0.8f))
+                                                    TextButton(
+                                                        onClick = { viewModel.runSpeedTest(alive.ip, alive.port) },
+                                                        modifier = Modifier.height(20.dp).clip(RoundedCornerShape(3.dp)).background(Color(0xFF1E40AF).copy(alpha = 0.2f)).border(0.5.dp, Color(0xFF3B82F6).copy(alpha = 0.3f), RoundedCornerShape(3.dp)).padding(horizontal = 4.dp),
+                                                        contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp)
+                                                    ) { Text("📥", fontSize = 7.sp) }
+                                                    TextButton(
+                                                        onClick = { viewModel.copyIndividualToClipboard(context, alive) },
+                                                        modifier = Modifier.height(20.dp).clip(RoundedCornerShape(3.dp)).background(Color(0xFF064E3B).copy(alpha = 0.2f)).border(0.5.dp, Color(0xFF34D399).copy(alpha = 0.3f), RoundedCornerShape(3.dp)).padding(horizontal = 4.dp),
+                                                        contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp)
+                                                    ) { Text("cpy", fontSize = 7.sp, color = Color(0xFF34D399)) }
+                                                }
                                             }
                                         }
                                     }
@@ -618,6 +655,42 @@ fun RadarScreen(viewModel: NovaRadarViewModel) {
                     }
                 }
             }
+                }
+            }
+        }
+    }
+
+    // Config Builder Dialog
+    if (showConfigBuilder && allIps.isNotEmpty()) {
+        val allCfgIps = remember { mutableStateOf(allIps.joinToString("\n") { "${it.ip}:${it.port}" }) }
+        androidx.compose.ui.window.Dialog(onDismissRequest = { showConfigBuilder = false }) {
+            Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(if (isLightTheme) Color(0xFFF8FAFC) else Color(0xFF0F172A)).padding(16.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("⚙ Config Builder", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(Modifier.weight(1f)) { Text("UUID", fontSize = 9.sp, color = Color.Gray); TextField(cfgUuid, { cfgUuid = it }, modifier = Modifier.fillMaxWidth().height(40.dp), textStyle = TextStyle(fontSize = 10.sp, fontFamily = FontFamily.Monospace), singleLine = true) }
+                        Column(Modifier.weight(1f)) { Text("SNI", fontSize = 9.sp, color = Color.Gray); TextField(cfgSni, { cfgSni = it }, modifier = Modifier.fillMaxWidth().height(40.dp), textStyle = TextStyle(fontSize = 10.sp, fontFamily = FontFamily.Monospace), singleLine = true) }
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(Modifier.weight(1f)) { Text("Network", fontSize = 9.sp, color = Color.Gray)
+                            Row { listOf("ws","grpc","tcp").forEach { TextButton({ cfgNetwork = it }, Modifier.height(28.dp).clip(RoundedCornerShape(4.dp)).background(if (cfgNetwork == it) Color(0xFF3B82F6) else Color(0xFF1E293B)).padding(horizontal = 8.dp, vertical = 2.dp), contentPadding = PaddingValues(0.dp)) { Text(it, fontSize = 9.sp, color = Color.White) } } } }
+                        Column(Modifier.weight(1f)) { Text("Security", fontSize = 9.sp, color = Color.Gray)
+                            Row { listOf("tls","none").forEach { TextButton({ cfgSecurity = it }, Modifier.height(28.dp).clip(RoundedCornerShape(4.dp)).background(if (cfgSecurity == it) Color(0xFF3B82F6) else Color(0xFF1E293B)).padding(horizontal = 8.dp, vertical = 2.dp), contentPadding = PaddingValues(0.dp)) { Text(it, fontSize = 9.sp, color = Color.White) } } } }
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Path", fontSize = 9.sp, color = Color.Gray, modifier = Modifier.width(40.dp))
+                        TextField(cfgPath, { cfgPath = it }, modifier = Modifier.fillMaxWidth().height(36.dp), textStyle = TextStyle(fontSize = 10.sp, fontFamily = FontFamily.Monospace), singleLine = true)
+                    }
+                    Divider(color = Color(0xFF1E293B))
+                    Text("${allCfgIps.value.lines().size} IPs loaded", fontSize = 9.sp, color = Color(0xFF34D399))
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.fillMaxWidth()) {
+                        val btnMod = Modifier.weight(1f).height(32.dp).clip(RoundedCornerShape(6.dp)).background(Color(0xFF1E3A5F))
+                        TextButton(onClick = { viewModel.exportVLESS(context) }, modifier = btnMod, contentPadding = PaddingValues(0.dp)) { Text("VLESS", fontSize = 9.sp) }
+                        TextButton(onClick = { viewModel.exportClash(context) }, modifier = btnMod, contentPadding = PaddingValues(0.dp)) { Text("Clash", fontSize = 9.sp) }
+                        TextButton(onClick = { viewModel.exportV2Ray(context) }, modifier = btnMod, contentPadding = PaddingValues(0.dp)) { Text("V2Ray", fontSize = 9.sp) }
+                        TextButton(onClick = { viewModel.exportSingBox(context) }, modifier = btnMod, contentPadding = PaddingValues(0.dp)) { Text("Sing-Box", fontSize = 9.sp) }
+                    }
+                    TextButton(onClick = { showConfigBuilder = false }, modifier = Modifier.fillMaxWidth().height(32.dp).clip(RoundedCornerShape(6.dp)).background(Color(0xFFEF4444).copy(alpha = 0.2f)), contentPadding = PaddingValues(0.dp)) { Text("بستن", fontSize = 10.sp, color = Color(0xFFEF4444)) }
                 }
             }
         }
@@ -2235,11 +2308,25 @@ fun FlowRow(
     }
 }
 
-// Page 3: SCAN LOGS SCREEN
+// Page 3: IMPORT IP SCREEN - Import, Scan, Suffix IPs for Nova Proxy
 @Composable
-fun LogsScreen(viewModel: NovaRadarViewModel) {
+fun ImportScreen(viewModel: NovaRadarViewModel) {
     val lang by viewModel.selectedLanguage.collectAsState()
-    val logs by viewModel.logs.collectAsState()
+    val importOutput by viewModel.importOutput.collectAsState()
+    val isScanning by viewModel.isScanning.collectAsState()
+    val aliveIps by viewModel.allAliveIps.collectAsState()
+    val context = LocalContext.current
+    var ipText by remember { mutableStateOf("") }
+    var mode by remember { mutableIntStateOf(1) }
+    var outputText by remember { mutableStateOf("") }
+    var showSuffixPrompt by remember { mutableStateOf(false) }
+    var rawOutput by remember { mutableStateOf("") }
+
+    LaunchedEffect(isScanning, mode) {
+        if (!isScanning && mode == 1 && aliveIps.isNotEmpty() && rawOutput.isEmpty()) {
+            showSuffixPrompt = true
+        }
+    }
 
     LocalizedLayout(lang) {
         Column(
@@ -2247,9 +2334,8 @@ fun LogsScreen(viewModel: NovaRadarViewModel) {
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
                 .padding(top = 96.dp, bottom = 120.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Header
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -2257,96 +2343,224 @@ fun LogsScreen(viewModel: NovaRadarViewModel) {
             ) {
                 Column {
                     Text(
-                        text = Localization.get("tab_logs", lang),
+                        text = Localization.get("import_ip", lang),
                         style = MaterialTheme.typography.displayMedium.copy(
                             brush = Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFF22D3EE),
-                                    Color(0xFF818CF8),
-                                    Color(0xFFA855F7)
-                                )
+                                colors = listOf(Color(0xFF22D3EE), Color(0xFF818CF8), Color(0xFFA855F7))
                             ),
                             fontWeight = FontWeight.Black
                         )
                     )
                     Text(
-                        text = Localization.get("tab_logs", lang),
+                        text = "IP:PORT IMPORT",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.secondary
                     )
                 }
+            }
 
-                // Clear Logs button
-                Button(
-                    onClick = { viewModel.clearLogs() },
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
-                        contentColor = Color(0xFF22D3EE)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                    .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
+            ) {
+                TextField(
+                    value = ipText,
+                    onValueChange = { ipText = it },
+                    modifier = Modifier.fillMaxSize().padding(8.dp),
+                    placeholder = {
+                        Text(
+                            Localization.get("import_placeholder", lang),
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            fontFamily = FontFamily.Monospace
+                        )
+                    },
+                    textStyle = TextStyle(
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 10.sp,
+                        color = MaterialTheme.colorScheme.onSurface
                     ),
-                    modifier = Modifier.height(36.dp)
-                ) {
-                    Text(Localization.get("clear", lang), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    maxLines = Int.MAX_VALUE
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                listOf(
+                    Triple(0, Localization.get("import_suffix_only", lang), Color(0xFF818CF8)),
+                    Triple(1, Localization.get("import_scan", lang), Color(0xFF22D3EE)),
+                    Triple(2, Localization.get("import_scan_suffix", lang), Color(0xFF34D399))
+                ).forEach { (id, label, color) ->
+                    val isSelected = mode == id
+                    Button(
+                        onClick = { mode = id },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (isSelected) color.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                            contentColor = if (isSelected) color else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        ),
+                        modifier = Modifier.weight(1f).height(36.dp),
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
+                    ) {
+                        Text(label, fontSize = 9.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                    }
                 }
             }
 
-            // Tech log terminal viewport
-            Box(
-                modifier = Modifier
-                    .weight(1f, fill = false)
-                    .fillMaxWidth()
-                    .padding(bottom = 12.dp) // Extra spacing for bottom nav
-                    .heightIn(max = 480.dp) // Prevent terminal overflow under menu
-                    .clip(RoundedCornerShape(24.dp))
-                    .background(Color(0xFF030712)) // Dark Terminal Background
-                    .border(1.dp, Color(0xFF22D3EE).copy(alpha = 0.3f), RoundedCornerShape(24.dp))
-                    .padding(14.dp)
-            ) {
-                if (logs.isEmpty()) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                imageVector = Icons.Outlined.FormatListBulleted,
-                                contentDescription = "No log",
-                                tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.4f),
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "TERMINAL IDLE",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
-                            )
-                        }
+            Button(
+                onClick = {
+                    viewModel.setImportedIps(ipText)
+                    outputText = ""
+                    rawOutput = ""
+                    viewModel.clearImportOutput()
+                    if (mode == 0) {
+                        outputText = viewModel.suffixOnly(context)
+                    } else {
+                        viewModel.startScanWithImportedIps(mode == 2)
                     }
-                } else {
-                    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                },
+                modifier = Modifier.fillMaxWidth().height(40.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF22D3EE).copy(alpha = 0.2f),
+                    contentColor = Color(0xFF22D3EE)
+                )
+            ) {
+                Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(6.dp))
+                Text(Localization.get("import_start", lang), fontWeight = FontWeight.Bold, fontSize = 11.sp)
+            }
+
+            val displayText = when (mode) {
+                0 -> outputText
+                1 -> if (rawOutput.isNotEmpty()) rawOutput else importOutput
+                2 -> importOutput
+                else -> ""
+            }
+            if (displayText.isNotEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.6f)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                        .border(1.dp, Color(0xFF22D3EE).copy(alpha = 0.3f), RoundedCornerShape(16.dp))
+                ) {
+                    Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            items(logs) { log ->
-                                val textColor = when {
-                                    log.contains("✔ ALIVE") -> Color(0xFF22D3EE) // Green
-                                    log.contains("✖ DEAD") -> Color(0xFFEF4444).copy(alpha = 0.5f) // Faded Red
-                                    log.contains("======") -> Color(0xFF22D3EE) // Tech headings
-                                    else -> Color(0xFF9CA3AF) // Grey default
+                            Text(
+                                Localization.get("import_output", lang),
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 8.sp,
+                                color = Color(0xFF22D3EE).copy(alpha = 0.6f),
+                                letterSpacing = 1.sp
+                            )
+                            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                IconButton(onClick = { viewModel.copyImportOutput(context) }, modifier = Modifier.size(24.dp)) {
+                                    Icon(Icons.Default.ContentCopy, "Copy", tint = Color(0xFF22D3EE), modifier = Modifier.size(14.dp))
                                 }
-                                Text(
-                                    text = log,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = textColor,
-                                    modifier = Modifier.fillMaxWidth()
-                                )
+                                IconButton(onClick = { viewModel.saveImportOutputToFile(context) }, modifier = Modifier.size(24.dp)) {
+                                    Icon(Icons.Default.Save, "Save", tint = Color(0xFF22D3EE), modifier = Modifier.size(14.dp))
+                                }
+                            }
+                        }
+                        Spacer(Modifier.height(4.dp))
+                        Box(Modifier.weight(1f)) {
+                            val lines = displayText.lines()
+                            if (lines.isEmpty()) {
+                                Text(Localization.get("import_no_ips", lang), fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
+                            } else {
+                                LazyColumn(verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                                    items(lines) { line ->
+                                        Text(
+                                            line,
+                                            fontFamily = FontFamily.Monospace,
+                                            fontSize = 8.sp,
+                                            color = if (line.contains("#Nova-")) Color(0xFF34D399).copy(alpha = 0.9f) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                                            maxLines = 1
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
                 }
+            } else if (isScanning) {
+                Box(modifier = Modifier.fillMaxWidth().weight(0.6f), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = Color(0xFF22D3EE),
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text("Scanning...", fontSize = 10.sp, color = Color(0xFF22D3EE).copy(alpha = 0.6f))
+                    }
+                }
+            } else {
+                Box(modifier = Modifier.fillMaxWidth().weight(0.6f), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(Icons.Outlined.Cloud, contentDescription = null, tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f), modifier = Modifier.size(36.dp))
+                        Spacer(Modifier.height(4.dp))
+                        Text(Localization.get("import_no_ips", lang), fontSize = 10.sp, color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f))
+                    }
+                }
             }
         }
+    }
+
+    if (showSuffixPrompt) {
+        val isFa = lang == AppLanguage.FA
+        AlertDialog(
+            onDismissRequest = {
+                rawOutput = aliveIps.joinToString("\n") { "${it.ip}:${it.port}" }
+                showSuffixPrompt = false
+            },
+            title = {
+                Text(if (isFa) "سوفیکس نوا پروکسی" else "Nova Proxy Suffix", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+            },
+            text = {
+                Text(
+                    if (isFa) "آیا می‌خواهید سوفیکس Nova (#Nova-id) به ${aliveIps.size} آی‌پی سالم اضافه شود؟"
+                    else "Do you want to add Nova Proxy suffix (#Nova-id) to the ${aliveIps.size} verified IPs?",
+                    fontSize = 12.sp
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.suffixForNovaProxy(context)
+                    showSuffixPrompt = false
+                }) {
+                    Text(if (isFa) "بله، سوفیکس شود" else "Yes, Suffix", color = Color(0xFF34D399))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    rawOutput = aliveIps.joinToString("\n") { "${it.ip}:${it.port}" }
+                    showSuffixPrompt = false
+                }) {
+                    Text(if (isFa) "خیر، فقط خام" else "No, Raw Only", color = Color(0xFFEF4444).copy(alpha = 0.7f))
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(20.dp)
+        )
     }
 }
 
@@ -2495,6 +2709,62 @@ fun AboutScreen(viewModel: NovaRadarViewModel) {
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.secondary
                         )
+                    }
+                }
+            }
+
+            // Terminal / Logs section
+            Column(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "TERMINAL LOG",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 8.sp,
+                        color = Color(0xFF22D3EE).copy(alpha = 0.5f),
+                        letterSpacing = 1.sp
+                    )
+                    TextButton(
+                        onClick = { viewModel.clearLogs() },
+                        modifier = Modifier.height(28.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp)
+                    ) {
+                        Text(Localization.get("clear", lang), fontSize = 9.sp, color = Color(0xFF22D3EE))
+                    }
+                }
+                Spacer(Modifier.height(4.dp))
+                val logs by viewModel.logs.collectAsState()
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 80.dp, max = 200.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFF030712))
+                        .border(1.dp, Color(0xFF22D3EE).copy(alpha = 0.3f), RoundedCornerShape(16.dp))
+                        .padding(10.dp)
+                ) {
+                    if (logs.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("TERMINAL IDLE", fontFamily = FontFamily.Monospace, fontSize = 8.sp, color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.4f))
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
+                            items(logs) { log ->
+                                val textColor = when {
+                                    log.contains("✔ ALIVE") || log.contains("✔") -> Color(0xFF22D3EE)
+                                    log.contains("✖ DEAD") || log.contains("✖") -> Color(0xFFEF4444).copy(alpha = 0.5f)
+                                    log.contains("======") -> Color(0xFF22D3EE)
+                                    else -> Color(0xFF9CA3AF)
+                                }
+                                Text(log, style = MaterialTheme.typography.labelSmall, color = textColor, maxLines = 1, fontSize = 8.sp)
+                            }
+                        }
                     }
                 }
             }

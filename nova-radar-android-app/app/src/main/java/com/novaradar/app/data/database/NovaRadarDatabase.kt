@@ -56,6 +56,7 @@ abstract class NovaRadarDatabase : RoomDatabase() {
             val defaultPorts = listOf(
                 PortConfig(80, true),
                 PortConfig(443, true),
+                PortConfig(853, false),
                 PortConfig(2053, false),
                 PortConfig(2083, false),
                 PortConfig(2087, false),
