@@ -85,3 +85,11 @@
   <a href="https://t.me/irnova_proxy">کانال تلگرام</a> •
   <a href="https://t.me/irnovaproxy">نویسنده</a>
 </div>
+
+---
+
+<div align="center">
+
+ساخته شده توسط <a href="https://github.com/iiviirv"><b>@iiviirv</b></a> برای گروه نوا پروکسی.
+
+</div>
