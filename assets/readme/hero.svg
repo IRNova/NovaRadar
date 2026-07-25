@@ -30,9 +30,9 @@
     <rect x="48" y="56" width="504" height="288" rx="18" fill="#0c1120"/>
     <rect x="48" y="56" width="504" height="288" rx="18" fill="none" stroke="#1e2740" stroke-width="1.5"/>
     <!-- window title bar (frameless desktop) -->
-    <circle cx="72" cy="80" r="5" fill="#f87171"/>
-    <circle cx="90" cy="80" r="5" fill="#fbbf24"/>
-    <circle cx="108" cy="80" r="5" fill="#34d399"/>
+    <circle cx="72" cy="80" r="5" fill="#9d4efb"/>
+    <circle cx="90" cy="80" r="5" fill="#818cf8"/>
+    <circle cx="108" cy="80" r="5" fill="#22d3ee"/>
     <text x="528" y="85" text-anchor="start" direction="rtl" font-size="16" fill="#8a93ad">نوا رادار</text>
     <line x1="48" y1="100" x2="552" y2="100" stroke="#1e2740" stroke-width="1.5"/>
 
@@ -47,7 +47,7 @@
       <path d="M168 210 L168 114 A96 96 0 0 1 227 130 Z" fill="url(#sweep)"/>
       <line x1="168" y1="210" x2="227" y2="130" stroke="#22d3ee" stroke-width="2"/>
       <!-- blips -->
-      <circle cx="205" cy="168" r="4.5" fill="#34d399"/>
+      <circle cx="205" cy="168" r="4.5" fill="#22d3ee"/>
       <circle cx="132" cy="245" r="4" fill="#22d3ee"/>
       <circle cx="210" cy="238" r="3.5" fill="#22d3ee"/>
       <circle cx="140" cy="176" r="3" fill="#8a93ad"/>
@@ -62,7 +62,7 @@
       <rect x="288" y="140" width="240" height="40" rx="9" fill="#101a30"/>
       <rect x="288" y="140" width="3" height="40" rx="1.5" fill="url(#brand)"/>
       <text x="304" y="165" font-size="18" fill="#e7ecf6">104.16.132.229</text>
-      <text x="512" y="166" text-anchor="end" font-size="22" font-weight="700" fill="#34d399">41</text>
+      <text x="512" y="166" text-anchor="end" font-size="22" font-weight="700" fill="#22d3ee">41</text>
       <!-- row 2 -->
       <rect x="288" y="186" width="240" height="40" rx="9" fill="#0e1526"/>
       <text x="304" y="211" font-size="18" fill="#c6cde0">162.159.192.4</text>
