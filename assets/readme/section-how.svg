@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="150" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" font-family="'SF Arabic','Geeza Pro',Tahoma,'Segoe UI',Arial,sans-serif">
+  <title id="t">نحوه کار، How it works</title>
+  <desc id="d">سربرگ بخش «نحوه کار» در مستندات نوا رادار با نقش‌مایه رادار و اسکن.</desc>
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#9d4efb"/>
+    </linearGradient>
+    <linearGradient id="scan" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#153048" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#153048" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="pingClip"><rect x="70" y="30" width="150" height="90"/></clipPath>
+  </defs>
+
+  <rect x="1" y="1" width="1198" height="148" rx="20" fill="#0a0d16"/>
+  <rect x="1" y="1" width="1198" height="148" rx="20" fill="none" stroke="#161d2e" stroke-width="1.5"/>
+  <ellipse cx="150" cy="75" rx="240" ry="150" fill="url(#glow)"/>
+
+  <!-- recurring radar-ping motif -->
+  <g clip-path="url(#pingClip)">
+    <circle cx="140" cy="75" r="46" fill="none" stroke="#1c3a52" stroke-width="1.5"/>
+    <circle cx="140" cy="75" r="32" fill="none" stroke="#1c3a52" stroke-width="1.5"/>
+    <circle cx="140" cy="75" r="18" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.7"/>
+    <path d="M140 75 L140 29 A46 46 0 0 1 172 42 Z" fill="url(#scan)"/>
+    <line x1="140" y1="75" x2="172" y2="42" stroke="#22d3ee" stroke-width="2"/>
+    <circle cx="165" cy="88" r="3" fill="#34d399"/>
+    <circle cx="120" cy="60" r="2.5" fill="#22d3ee"/>
+  </g>
+  <circle cx="140" cy="75" r="2.6" fill="#22d3ee"/>
+
+  <!-- faint index number -->
+  <text x="258" y="104" text-anchor="middle" font-family="'SF Mono','Menlo',monospace" font-size="76" font-weight="800" fill="#111a2c">۰۳</text>
+
+  <!-- dotted scan line to title -->
+  <line x1="352" y1="75" x2="1000" y2="75" stroke="url(#scan)" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <circle cx="1000" cy="75" r="3.5" fill="#22d3ee"/>
+
+  <!-- right: icon chip + title + subtitle -->
+  <rect x="1088" y="47" width="56" height="56" rx="16" fill="#0c1120" stroke="url(#brand)" stroke-width="2"/>
+  <path d="M1116 67 L1104.5 80 M1116 67 L1127.5 80" fill="none" stroke="#3a4a63" stroke-width="2"/>
+    <circle cx="1102" cy="84" r="4.5" fill="none" stroke="#22d3ee" stroke-width="2"/>
+    <circle cx="1130" cy="84" r="4.5" fill="none" stroke="#9d4efb" stroke-width="2"/>
+    <circle cx="1116" cy="63" r="4.5" fill="url(#brand)"/>
+  <text x="1064" y="90" text-anchor="start" direction="rtl" font-size="46" font-weight="800" fill="#eef2fb">نحوه کار</text>
+  <text x="1064" y="116" text-anchor="end" font-family="'SF Mono','Menlo',monospace" font-size="15" fill="#6f7891" letter-spacing="1">How it works</text>
+</svg>
