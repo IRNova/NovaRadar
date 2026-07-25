@@ -1,9 +1,6 @@
 <div align="center">
   <img src="assets/readme/hero.svg" width="100%" alt="نوا رادار، اسکنر IP سالم کلودفلر برای دسکتاپ، ساخته‌شده با Go و React، همراه با اسکوپ رادار و فهرست نتایج مرتب‌شده بر اساس سرعت" />
   <p>
-    <a href="README.md">English</a>
-  </p>
-  <p>
     <img src="https://img.shields.io/badge/Go-1.25-blue?logo=go" />
     <img src="https://img.shields.io/badge/React-19-61dafb?logo=react" />
     <img src="https://img.shields.io/badge/Wails-v3--alpha-333?logo=wails" />
