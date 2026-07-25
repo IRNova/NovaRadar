@@ -71,7 +71,7 @@
 
 ## ستاره‌ها در طول زمان
 
-[![Stargazers over time](https://starchart.cc/IRNova/NovaRadar.svg?variant=adaptive)](https://starchart.cc/IRNova/NovaRadar)
+[تاریخچهٔ ستاره‌ها را ببینید](https://star-history.com/#IRNova/NovaRadar&Date)
 
 <a id="لایسنس"></a>
 <img src="assets/readme/section-license.svg" width="100%" alt="سربرگ بخش لایسنس، نوا رادار" />
