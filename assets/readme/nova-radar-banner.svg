@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Nova Radar</title>
+  <desc id="desc">Animated neon radar banner for Nova Proxy's Nova Radar application</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090B18"/>
+      <stop offset=".55" stop-color="#11102B"/>
+      <stop offset="1" stop-color="#071C2A"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A855F7"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#22D3EE" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clip"><rect width="1200" height="360" rx="26"/></clipPath>
+  </defs>
+  <g clip-path="url(#clip)">
+    <rect width="1200" height="360" fill="url(#bg)"/>
+    <circle cx="930" cy="175" r="260" fill="url(#glow)"/>
+    <g opacity=".12" stroke="#7DD3FC" stroke-width="1">
+      <path d="M0 60H1200M0 120H1200M0 180H1200M0 240H1200M0 300H1200"/>
+      <path d="M100 0V360M200 0V360M300 0V360M400 0V360M500 0V360M600 0V360M700 0V360M800 0V360M900 0V360M1000 0V360M1100 0V360"/>
+    </g>
+    <g transform="translate(930 180)" fill="none" stroke="#22D3EE" stroke-opacity=".55">
+      <circle r="140" stroke-width="2"/>
+      <circle r="105" stroke-width="1.5"/>
+      <circle r="70" stroke-width="1.5"/>
+      <circle r="35" stroke-width="1"/>
+      <path d="M-155 0H155M0-155V155" stroke-opacity=".5"/>
+      <path d="M0 0L0-140A140 140 0 0 1 99-99Z" fill="#22D3EE" fill-opacity=".12" stroke="none">
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+      </path>
+      <circle cx="54" cy="-70" r="5" fill="#A855F7" stroke="none">
+        <animate attributeName="opacity" values="1;.25;1" dur="1.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-82" cy="24" r="4" fill="#22D3EE" stroke="none">
+        <animate attributeName="opacity" values=".2;1;.2" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="18" cy="42" r="3" fill="#A855F7" stroke="none">
+        <animate attributeName="r" values="3;7;3" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.2;1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <g transform="translate(74 76)">
+      <rect width="5" height="205" rx="2.5" fill="url(#stroke)"/>
+      <text x="34" y="74" fill="#F8FAFC" font-family="Segoe UI,Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="5">NOVA</text>
+      <text x="34" y="139" fill="#22D3EE" font-family="Segoe UI,Arial,sans-serif" font-size="54" font-weight="700" letter-spacing="8">RADAR</text>
+      <text x="37" y="180" fill="#A5B4FC" font-family="Segoe UI,Arial,sans-serif" font-size="17" letter-spacing="3">CLOUDFLARE IP SCANNER</text>
+    </g>
+    <path d="M75 315H1125" stroke="url(#stroke)" stroke-opacity=".65"/>
+    <text x="76" y="340" fill="#94A3B8" font-family="Segoe UI,Arial,sans-serif" font-size="12" letter-spacing="3">NOVA PROXY  •  SCAN / VERIFY / SORT</text>
+    <circle cx="1110" cy="315" r="4" fill="#22D3EE">
+      <animate attributeName="opacity" values=".3;1;.3" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
